@@ -1,6 +1,6 @@
-fs = require('fs')
-print = console.log
-stream = fs.readFileSync('input', 'utf8')
+// fs = require('fs')
+// print = console.log
+// stream = fs.readFileSync('input', 'utf8')
 // stream = fs.readFileSync('sample', 'utf8')
 
 // Day 15 : Lens Library
@@ -14,8 +14,8 @@ stream = fs.readFileSync('input', 'utf8')
 // https://adventofcode.com/2023/day/15
 // https://adventofcode.com/2023/day/15/input
 
-// stream = document.body.innerText
-data = stream.replace('\r', '').replace('\n', '').split(',')
+stream = document.body.innerText
+data = stream.replace('\r|\n', '').split(',')
 
 A  = w => w.split('').reduce((a,v)=>((a+v.charCodeAt())*17)%256,0)
 P1 = m => m.reduce((a,v)=>a+A(v),0)
