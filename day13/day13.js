@@ -16,3 +16,6 @@
                  (Day13(stream))//AOC2023DAY13
 
 
+// Copy/paste and run in browser console
+// https://adventofcode.com/2023/day/13
+// https://adventofcode.com/2023/day/13/input
