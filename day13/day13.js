@@ -1,9 +1,3 @@
-
-
-
-
-
-
                         stream = 
                 document.body.innerText;
             data=stream.replaceAll('\r','').
