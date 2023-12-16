@@ -30,5 +30,6 @@ console.log((performance.now() -t) + ' milliseconds' )
 // D = encodes directions with 0,1,2,3 ; 
 // N = the workhorse that finds the new direction, given future grid
 //     type and current direction ; 
+// H = hashes position location
 // B = advances the beam and applies DFS if splits ; 
 // P1 and P2 are solution functions.
