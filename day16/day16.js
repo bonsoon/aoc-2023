@@ -20,9 +20,11 @@ B = (p,d,g,m,ini=1)=>{
     return ini? (m.reduce((a,v)=>a+(v!=0),0)) :null }
 P1 = g => console.log('part 1 ... ', B([0,-1],3,g,Array(g.w *g.h).fill(0)))
 P2 = g => { let [x,y,dx,dy,max,r] = [-1,-1,1,0,0,[3,0,2,1].values()]
+    let hash = Array(g.w *g.h)
     for(s = 0; s < 4; [dy,dx]=[dx,-dy], s++){d=r.next().value
         for (i = 0; i < (dy&1)*(g.w+1)+(dx&1)*(g.h+1) ; x+=dx, y+=dy, i++) { 
-          max = Math.max(max,B([x,y],d,g,Array(g.w *g.h).fill(0))||0)}}
+            hash.fill(0)
+            max = Math.max(max,B([x,y],d,g, hash )||0)}}
     console.log('part 2 ... ', max)}
 
 t = performance.now(); g = G(stream); P1(g); P2(g)
