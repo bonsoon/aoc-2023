@@ -17,8 +17,8 @@ B = (p,d,g,m=new Map())=>{
     return m.size - 1}
 P1 = (g) => console.log('part 1 ... ', B([0,-1],3,g))
 P2 = (g) => {
-    let [x,y,dx,dy,r,max,d,i,_] = [-1,-1,1,0,[3,0,2,1].values(),0]
-    for( d = r.next().value, s = 0; s < 4; _=dx, dx=-dy, dy=_, s++){
+    let [x,y,dx,dy,r,max,d,i] = [-1,-1,1,0,[3,0,2,1].values(),0]
+    for( d = r.next().value, s = 0; s < 4; [dy,dx]=[dx,-dy], s++){
         for ( i=1; i<= g.w; x+=dx, y+=dy, i++) {
             B([x,y],d,g) > max ? max=B([x,y],d,g):null}}
     console.log('part 2 ... ', max)}
