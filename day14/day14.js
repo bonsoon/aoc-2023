@@ -36,7 +36,7 @@ stream = fs.readFileSync('input', 'utf8')
 // stream = fs.readFileSync('sample', 'utf8')
 
 t = performance.now()
-stream=document.body.innerText
+// stream=document.body.innerText
 data = stream.replaceAll('\r', '').replace(/\n$/, '').split('\n')
 
 // P = Piping function useful for composition later.
