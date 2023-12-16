@@ -4,16 +4,18 @@
 
 stream = document.body.innerText
 
-G = s => (g=s.replaceAll(/\r|\n$/g, '').split('\n'), g.w=g[0].length, g.h=g.length, g)
+G = s => (g = s.replaceAll(/\r|\n$/g, '').split('\n'),w=g[0].length, h=g.length,
+    g = g.map(x=>x.split('')).flat().map(c=>['.','/','\\','|','-'].indexOf(c)),
+    g.w=w, g.h=h,g)
 D = n => [[-1,0],[1,0],[0,-1],[0,1]][n]
-N = (c,d) => c == '/'? [[3],[2],[1],[0]][d]: c == '\\'? [[2],[3],[0],[1]][d]:
-            c == '|'? [[d],[d],[0,1],[0,1]][d]: c == '-'? [[2,3],[2,3],[d],[d]][d]:[d]
-H = (p,h) => p[0] * h + p[1]
+N = (c,d) => c==0?[d]:c == 1? [[3],[2],[1],[0]][d]: c == 2? [[2],[3],[0],[1]][d]:
+    c == 3? [[d],[d],[0,1],[0,1]][d]:[[2,3],[2,3],[d],[d]][d]
+H = (p,w) => p[0] * w + p[1]
 B = (p,d,g,m,ini=1)=>{
-    if (m[H(p,g.h)]&(1<<d)) { return } else(ini?null:m[H(p,g.h)]+=(1<<d))
+    if (m[H(p,g.w)]&(1<<d)) { return } else(ini?null:m[H(p,g.w)]+=(1<<d))
     let ed = D(d), [nr,nc] = [p[0]+ed[0],p[1]+ed[1]]
     if (nr < 0 || nr >= g.h || nc < 0 || nc >= g.w){ return }
-    for(let z of N(g[nr][nc],d)){B([nr,nc],z,g,m,0)}
+    for(let z of N(g[nr *g.w +nc],d)){B([nr,nc],z,g,m,0)}
     return ini? (m.reduce((a,v)=>a+(v!=0),0)) :null }
 P1 = g => console.log('part 1 ... ', B([0,-1],3,g,Array(g.w *g.h).fill(0)))
 P2 = g => { let [x,y,dx,dy,max,r] = [-1,-1,1,0,0,[3,0,2,1].values()]
