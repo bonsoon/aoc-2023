@@ -4,13 +4,10 @@
 
 stream = document.body.innerText
 
-G = s => (g=s.replaceAll(/\r|\n$/g, '').split('\n')
-                , g.w=g[0].length, g.h=g.length, g)
+G = s => (g=s.replaceAll(/\r|\n$/g, '').split('\n'), g.w=g[0].length, g.h=g.length, g)
 D = n => [[-1,0],[1,0],[0,-1],[0,1]][n]
-N = (c,d) => c == '/'? [[3],[2],[1],[0]][d]:
-            c == '\\'? [[2],[3],[0],[1]][d]:
-            c == '|'? [[d],[d],[0,1],[0,1]][d]:
-            c == '-'? [[2,3],[2,3],[d],[d]][d]:[d]
+N = (c,d) => c == '/'? [[3],[2],[1],[0]][d]: c == '\\'? [[2],[3],[0],[1]][d]:
+             c == '|'? [[d],[d],[0,1],[0,1]][d]: c == '-'? [[2,3],[2,3],[d],[d]][d]:[d]
 B = (p,d,g,m=new Map())=>{
     if (m.has(p+'') && m.get(p+'').includes(d) ) { return }
     else( m.has(p+'')? m.get(p+'').push(d):m.set(p+'',[d]))
