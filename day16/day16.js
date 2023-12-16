@@ -32,3 +32,11 @@ P2 = (g) => {
 t = performance.now();
 (g = G(stream),P1(g),P2(g))
 console.log((performance.now() -t)/1000 + ' seconds' )
+
+// G = parses the input data, and appends grid width and height ; 
+// A = a simple vector adding function ; 
+// D = encodes directions with 0,1,2,3 ; 
+// N = the workhorse that finds the new direction, given future grid
+//     type and current direction ; 
+// B = advances the beam and applies DFS if splits ; 
+// P1 and P2 are solution functions.
