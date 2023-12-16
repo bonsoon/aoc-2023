@@ -15,12 +15,13 @@ B = (p,d,g,m=new Map(),ini=1)=>{
     if (nr < 0 || nr >= g.h || nc < 0 || nc >= g.w){ return }
     for(let z of N(g[nr][nc],d)){B([nr,nc],z,g,m,0)}
     return ini? (m.size-1):null }
-P1 = (g) => console.log('part 1 ... ', B([0,-1],3,g))
-P2 = (g) => {
-    let [x,y,dx,dy,r,max,d,i] = [-1,-1,1,0,[3,0,2,1].values(),0]
-    for(d = r.next().value, s = 0; s < 4; [dy,dx]=[dx,-dy], s++){
-        for (i = 1; i <= g.w; x+=dx, y+=dy, i++) {
-            B([x,y],d,g) > max ? max=B([x,y],d,g) : null}}
+P1 = g => console.log('part 1 ... ', B([0,-1],3,g))
+P2 = g => {
+    let [x,y,dx,dy,max,r] = [-1,-1,1,0,0,[3,0,2,1].values()]
+    for(s = 0; s < 4; [dy,dx]=[dx,-dy], s++){
+        d=r.next().value
+        for (i = 0; i < g.w+1; x+=dx, y+=dy, i++) { 
+          max = Math.max(max,B([x,y],d,g)||0)}}
     console.log('part 2 ... ', max)}
 
 t = performance.now(); g = G(stream); P1(g) ; P2(g)
