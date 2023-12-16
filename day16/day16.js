@@ -1,5 +1,6 @@
-// Day 16
-// Copy / paste and run directly in browser console of puzzle input page
+// --- Day 16: The Floor Will Be Lava ---
+// Copy/paste below and run directly in console of puzzle input
+// https://adventofcode.com/2023/day/16
 // https://adventofcode.com/2023/day/16/input
 
 stream = document.body.innerText

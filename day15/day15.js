@@ -1,15 +1,4 @@
-// fs = require('fs')
-// print = console.log
-// stream = fs.readFileSync('input', 'utf8')
-// stream = fs.readFileSync('sample', 'utf8')
-
-// Day 15 : Lens Library
-// A = Hash function on string to a number in 0 to 255
-// P1 = Part 1 solution function, takes input data
-// B = Install the lenses, takes input data m, and empty box 
-//    collection b, and return a collection of lens-populated boxes
-// P2 = Part 2 solution function P2, takes input data
-
+// --- Day 15: Lens Library ---
 // Copy/paste below and run directly in console of puzzle input
 // https://adventofcode.com/2023/day/15
 // https://adventofcode.com/2023/day/15/input
@@ -35,3 +24,9 @@
         P1(data),'\nPart 2 is ... ',
            P2(data)); //AOC 2023
                // DAY 15, by B
+
+// A = Hash function on string to a number in 0 to 255
+// P1 = Part 1 solution function, takes input data
+// B = Install the lenses, takes input data m, and empty box 
+//    collection b, and return a collection of lens-populated boxes
+// P2 = Part 2 solution function P2, takes input data
