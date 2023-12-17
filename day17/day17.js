@@ -1,7 +1,7 @@
 fs = require('fs')
 print = console.log
 stream = fs.readFileSync('input', 'utf8')
-stream = fs.readFileSync('sample', 'utf8')
+// stream = fs.readFileSync('sample', 'utf8')
 // stream = fs.readFileSync('smallex', 'utf8')
 
 // -- Day 17
@@ -65,17 +65,17 @@ W = (a, b) => {
 // each node (r,c,orientation)
 // where orientation 0 is up/down, 1 is left/right
 
-nbrs = function (node) {
+nbrs = function (node,min=1,max=3) {  // default min=1, max=3, allowed flexibility for part 2
     let [r, c, o] = tr(node)
     let ns = [], dr, dc, no
     if (o) { dc = 1, dr = 0, no = 0 } else { dc = 0, dr = 1, no = 1 }
-    for (let i = 1; i <= 3; i++) {
+    for (let i = min; i <= max; i++) {
         if (I([r + i * dr, c + i * dc])) { ns.push([r + i * dr, c + i * dc, no]) }
         if (I([r - i * dr, c - i * dc])) { ns.push([r - i * dr, c - i * dc, no]) }
     }
     return ns.map(x => t(x))
 }
-function explore() {
+function explore(min=1,max=3) {
     // initial set of visited (position,dir)
     let visited = new Map()
     // initial frontier set and intially visited set
@@ -95,7 +95,7 @@ function explore() {
             let [node, _ ] = ps
             // print('---',node)
             // its neighbors are 
-            let neighbor_list = nbrs(node) // a list
+            let neighbor_list = nbrs(node,min,max) // a list
             // print(neighbor_list)
             // for each neighbor n  in the list
             for (let n of neighbor_list) {
@@ -126,10 +126,12 @@ function explore() {
         frontier = new_frontier
 
     }
-    print(visited.get(t([height-1,width-1,0])))
-    print(visited.get(t([height-1,width-1,1])))
-    // print(visited)
+    return Math.min(visited.get(t([height-1,width-1,0])),
+    visited.get(t([height-1,width-1,1]))
+    )
 
 }
-explore()
+
 print('--'.repeat(10))
+print('part 1 ... ', explore())
+print('part 1 ... ', explore(4,10))
