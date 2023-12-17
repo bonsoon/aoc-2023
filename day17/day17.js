@@ -131,7 +131,12 @@ function explore(min=1,max=3) {
     )
 
 }
-
+ts = performance.now()
 print('--'.repeat(10))
 print('part 1 ... ', explore())
-print('part 1 ... ', explore(4,10))
+print('part 2 ... ', explore(4,10))
+print((performance.now() - ts)/1000, 'seconds')
+
+// part 1 ...  1128
+// part 2 ...  1268
+// 17.366123699963094 seconds
