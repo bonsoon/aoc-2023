@@ -20,7 +20,6 @@ dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]]
 for (let line of data) {
     let d = ['U', 'D', 'L', 'R'].indexOf(line[0])
     let dir = dirs[d]
-    // print(d, dir)
     let m = parseInt(line[1])
     for (let k = 0; k < m; k++) {
         cur_pos = A(cur_pos, dir)
