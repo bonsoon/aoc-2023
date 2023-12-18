@@ -75,6 +75,8 @@ nbrs = function (node,min=1,max=3) {  // default min=1, max=3, allowed flexibili
     }
     return ns.map(x => t(x))
 }
+
+
 function explore(min=1,max=3) {
     // initial set of visited (position,dir)
     let visited = new Map()
@@ -84,7 +86,6 @@ function explore(min=1,max=3) {
     frontier.set('0,0,1',true)
     visited.set('0,0,0',0)
     visited.set('0,0,1',0)
-
     // print(frontier)
     while (frontier.size) {
         let new_frontier = new Map()
@@ -124,19 +125,39 @@ function explore(min=1,max=3) {
             // frontier.delete(ps)
         }
         frontier = new_frontier
+        // print(minMap(new_frontier))
 
     }
-    return Math.min(visited.get(t([height-1,width-1,0])),
+    // print('total visits...', visited.size)
+    return [Math.min(visited.get(t([height-1,width-1,0])),
     visited.get(t([height-1,width-1,1]))
-    )
+    ), visited]
 
 }
 ts = performance.now()
+print('total nodes are width * height * 2 is ...' , width * height * 2)
 print('--'.repeat(10))
-print('part 1 ... ', explore())
-print('part 2 ... ', explore(4,10))
+let [p1,path1] = explore()
+print('part 1 ... ', p1)
+
+
+let [p2,path2] = explore(4,10)
+print('part 2 ... ', p2)
 print((performance.now() - ts)/1000, 'seconds')
 
 // part 1 ...  1128
 // part 2 ...  1268
 // 17.366123699963094 seconds
+
+// Visualization stuff
+
+heat = '███▓▓▒▒░░ x'
+
+// print(data)
+
+function draw(m){
+    m.forEach(line=>
+        print(line.reduce((acc,v) => acc+heat[v], ''))
+    )
+}
+draw(data)
