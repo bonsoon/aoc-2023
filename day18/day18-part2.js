@@ -49,7 +49,8 @@ for (let line of data) {
 
 // we gotta gauss shoelace and picks
 // gauss gives area of polygon (1/2) sum det(p,q) , where p,q are succusive vertices
-// picks formula gives 
+// picks formula gives A = i + b/2 - 1, where i = interior vertices, b bdry vertices
+// as we want i + b = (2A + 2 - b)/2 + b
 
 det = function (p,q){
     return p[0]*q[1] - p[1]*q[0]
