@@ -5,6 +5,7 @@ stream = fs.readFileSync('input', 'utf8')
 // stream = fs.readFileSync('smallex', 'utf8')
 
 // -- Day 19 Aplenty
+startime = performance.now()
 
 data = stream.replace(/\r/g, '').split('\n\n')
 let [wf, pts] = data
@@ -98,7 +99,7 @@ function part1() {
         p1 += p.x + p.m + p.a + p.s
     }
 
-    return p1 
+    return p1
     // 406934
 }
 // part1()
@@ -151,67 +152,58 @@ function compute(rule, ran) {
     let rule_list = rule.split(',')
     for (let rule of rule_list) {
         let c = rule[0]
-        if (rule.includes('<=')) { 
+        if (rule.includes('<=')) {
             let num = parseInt(rule.slice(3))
             new_ran[c][1] = Math.min(num, new_ran[c][1])
         }
-        else if (rule.includes('>=')) { 
+        else if (rule.includes('>=')) {
             let num = parseInt(rule.slice(3))
             new_ran[c][0] = Math.max(num, new_ran[c][0])
         }
-        else if (rule.includes('<')) { 
-            let num = parseInt(rule.slice(2))-1
+        else if (rule.includes('<')) {
+            let num = parseInt(rule.slice(2)) - 1
             new_ran[c][1] = Math.min(num, new_ran[c][1])
         }
-        else if (rule.includes('>')) { 
-            let num = parseInt(rule.slice(2))+1
+        else if (rule.includes('>')) {
+            let num = parseInt(rule.slice(2)) + 1
             new_ran[c][0] = Math.max(num, new_ran[c][0])
         }
     }
     return new_ran
 }
 
-// print(
-//     compute(rule,ran)
-// )
+// Now we perform DFS and explore
 
-
-
-A_count = 0
-R_count = 0
-valids = []
-function explore(label, ran = { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] }) {
+function explore(label, ran = { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] },valids = []) {
     // print(label,ran)
     if (label == 'A') {
-        A_count++
         valids.push(ran)
-        return
+        return 
     }
     if (label == 'R') {
-        R_count++
         return
     }
-
     let children = worktree.get(label)
     for (let e of children) {
-        let new_ran = compute(e[0],ran)
-        explore(e[1],new_ran)
+        let new_ran = compute(e[0], ran)
+        explore(e[1], new_ran, valids)
     }
-}
-function part2(){
-    
-explore('in')
-let p2 = 0
-for(let e of valids){
-    // print(e)
-    p2+=(e.x[1]-e.x[0]+1)
-    *(e.m[1]-e.m[0]+1)
-    *(e.a[1]-e.a[0]+1)
-    *(e.s[1]-e.s[0]+1)
-}
-return p2
+    return valids
 }
 
+function part2() {
+    valids= explore('in')
+    let p2 = 0
+    for (let e of valids) {
+        p2 += (e.x[1] - e.x[0] + 1)
+            * (e.m[1] - e.m[0] + 1)
+            * (e.a[1] - e.a[0] + 1)
+            * (e.s[1] - e.s[0] + 1)
+    }
+    return p2
+}
 
 print('part 1...', part1())
 print('part 2...', part2())
+
+print(performance.now() - startime, 'ms')
