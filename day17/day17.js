@@ -88,18 +88,21 @@ function explore(min = 1, max = 3) {
     let visited = new Map()
     // initial frontier set and intially visited set
     let frontier = new Map()
-    frontier.set(t([0, 0, 0]), true)
-    frontier.set(t([0, 0, 1]), true)
+    frontier.set(t([0, 0, 0]))
+    frontier.set(t([0, 0, 1]))
     visited.set(t([0, 0, 0]), 0)
     visited.set(t([0, 0, 1]), 0)
     // print(frontier)
     while (frontier.size) {
+        draw_f(data,frontier)
+        // print(frontier.size)
         let new_frontier = new Map()
-        let iter = frontier.entries()
+        let iter = frontier.keys()
+        // print(iter)
         let ps
-        while (ps = iter.next().value) {
+        while ((ps = iter.next().value )> -1) {
             // for this frontier node
-            let node = ps[0]
+            let node = ps
             // print('---',node)
             // its neighbors are 
             let neighbor_list = nbrs(node, min, max) // a list
@@ -111,14 +114,14 @@ function explore(min = 1, max = 3) {
                     // if so update the score if equal or smaller
                     if (visited.get(node) + W(node, n) <= visited.get(n)) {
                         visited.set(n, visited.get(node) + W(node, n))
-                        new_frontier.set(n, true)
+                        new_frontier.set(n)
                     }
                     // ?? and visit if smaller?
                     // going backwards bad idea? or not.. i think we need
                     // print(node,visited.get(node) + W(node, n))
                 } else {
                     // we never been visited, we gonna add to new frontier
-                    new_frontier.set(n, true)
+                    new_frontier.set(n)
                     // and set it to visited, and update the score
                     visited.set(n, visited.get(node) + W(node, n))
                     // print(node,visited.get(node) + W(node, n))
@@ -165,4 +168,19 @@ function draw(m) {
         print(line.reduce((acc, v) => acc + heat[v], ''))
     )
 }
+
+function draw_f(d,f){
+    console.clear()
+let nd = structuredClone(d)
+let iter = f.keys()
+while((n = iter.next().value)>-1){
+    let [r,c] = tr(n)
+    nd[r][c] = 10
+}
+nd.forEach(line =>
+    print(line.reduce((acc, v) => acc + '███▓▓▒▒░░ x'[v], ''))
+)
+}
+
+
 // draw(data)
