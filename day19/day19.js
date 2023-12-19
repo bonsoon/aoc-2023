@@ -174,11 +174,11 @@ function compute(rule, ran) {
 
 // Now we perform DFS and explore
 
-function explore(label, ran = { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] },valids = []) {
+function explore(label, ran = { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] }, valids = []) {
     // print(label,ran)
     if (label == 'A') {
         valids.push(ran)
-        return 
+        return
     }
     if (label == 'R') {
         return
@@ -192,7 +192,7 @@ function explore(label, ran = { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1,
 }
 
 function part2() {
-    valids= explore('in')
+    valids = explore('in')
     let p2 = 0
     for (let e of valids) {
         p2 += (e.x[1] - e.x[0] + 1)
