@@ -38,11 +38,17 @@ K = (c, v) => v.map(x => c * x)   // simple vector scaling
 I = p => 0 <= p[0] && p[0] < height && 0 <= p[1] && p[1] < width // check if pos inside grid
 
 t = function (v) {
-    return (v + '')
+    let [r, c, o] = v
+    return (r * height + c + o * width * height)
+    // return (v + '')
 }
 
 tr = function (s) {
-    return s.split(',').map(x => parseInt(x))
+    let o = (s / width / height << 1 >> 1)
+    let r = (s - o * width * height) / height << 1 >> 1
+    let c = s % height
+    return [r, c, o]
+    // return s.split(',').map(x => parseInt(x))
 }
 
 W = (a, b) => {
@@ -53,7 +59,7 @@ W = (a, b) => {
     let seg_score = 0
     let dr = end[0] - start[0]
     let dc = end[1] - start[1]
-    let mag = Math.max(Math.abs(dr), Math.abs(dc))
+    let mag = Math.abs(dr) + Math.abs(dc)
     dr = dr / mag
     dc = dc / mag
     for (let k = 1; k <= mag; k++) {
@@ -65,7 +71,7 @@ W = (a, b) => {
 // each node (r,c,orientation)
 // where orientation 0 is up/down, 1 is left/right
 
-nbrs = function (node,min=1,max=3) {  // default min=1, max=3, allowed flexibility for part 2
+nbrs = function (node, min = 1, max = 3) {  // default min=1, max=3, allowed flexibility for part 2
     let [r, c, o] = tr(node)
     let ns = [], dr, dc, no
     if (o) { dc = 1, dr = 0, no = 0 } else { dc = 0, dr = 1, no = 1 }
@@ -77,15 +83,15 @@ nbrs = function (node,min=1,max=3) {  // default min=1, max=3, allowed flexibili
 }
 
 
-function explore(min=1,max=3) {
+function explore(min = 1, max = 3) {
     // initial set of visited (position,dir)
     let visited = new Map()
     // initial frontier set and intially visited set
     let frontier = new Map()
-    frontier.set('0,0,0',true)
-    frontier.set('0,0,1',true)
-    visited.set('0,0,0',0)
-    visited.set('0,0,1',0)
+    frontier.set(t([0, 0, 0]), true)
+    frontier.set(t([0, 0, 1]), true)
+    visited.set(t([0, 0, 0]), 0)
+    visited.set(t([0, 0, 1]), 0)
     // print(frontier)
     while (frontier.size) {
         let new_frontier = new Map()
@@ -93,27 +99,26 @@ function explore(min=1,max=3) {
         let ps
         while (ps = iter.next().value) {
             // for this frontier node
-            let [node, _ ] = ps
+            let node = ps[0]
             // print('---',node)
             // its neighbors are 
-            let neighbor_list = nbrs(node,min,max) // a list
+            let neighbor_list = nbrs(node, min, max) // a list
             // print(neighbor_list)
             // for each neighbor n  in the list
             for (let n of neighbor_list) {
                 // check if n has been visited
                 if (visited.has(n)) {
                     // if so update the score if equal or smaller
-                    if (visited.get(node) + W(node, n) <= visited.get(n))
-                    {
+                    if (visited.get(node) + W(node, n) <= visited.get(n)) {
                         visited.set(n, visited.get(node) + W(node, n))
-                        new_frontier.set(n,true)
+                        new_frontier.set(n, true)
                     }
                     // ?? and visit if smaller?
                     // going backwards bad idea? or not.. i think we need
                     // print(node,visited.get(node) + W(node, n))
                 } else {
                     // we never been visited, we gonna add to new frontier
-                    new_frontier.set(n,true)
+                    new_frontier.set(n, true)
                     // and set it to visited, and update the score
                     visited.set(n, visited.get(node) + W(node, n))
                     // print(node,visited.get(node) + W(node, n))
@@ -129,21 +134,21 @@ function explore(min=1,max=3) {
 
     }
     // print('total visits...', visited.size)
-    return [Math.min(visited.get(t([height-1,width-1,0])),
-    visited.get(t([height-1,width-1,1]))
+    return [Math.min(visited.get(t([height - 1, width - 1, 0])),
+        visited.get(t([height - 1, width - 1, 1]))
     ), visited]
 
 }
 ts = performance.now()
-print('total nodes are width * height * 2 is ...' , width * height * 2)
+print('total nodes are width * height * 2 is ...', width * height * 2)
 print('--'.repeat(10))
-let [p1,path1] = explore()
+let [p1, path1] = explore()
 print('part 1 ... ', p1)
 
 
-let [p2,path2] = explore(4,10)
+let [p2, path2] = explore(4, 10)
 print('part 2 ... ', p2)
-print((performance.now() - ts)/1000, 'seconds')
+print((performance.now() - ts) / 1000, 'seconds')
 
 // part 1 ...  1128
 // part 2 ...  1268
@@ -155,9 +160,9 @@ heat = '███▓▓▒▒░░ x'
 
 // print(data)
 
-function draw(m){
-    m.forEach(line=>
-        print(line.reduce((acc,v) => acc+heat[v], ''))
+function draw(m) {
+    m.forEach(line =>
+        print(line.reduce((acc, v) => acc + heat[v], ''))
     )
 }
-draw(data)
+// draw(data)
