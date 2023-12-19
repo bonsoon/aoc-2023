@@ -1,5 +1,3 @@
-const { e } = require('mathjs')
-
 fs = require('fs')
 print = console.log
 stream = fs.readFileSync('input', 'utf8')
