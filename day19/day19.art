@@ -1,7 +1,7 @@
 ; Day 19 Aplenty 
 
 ; read the file into two halves
-[workflows,parts]: split.by: "\n\n" replace read "input" {/\r/} ""
+[workflows,parts]: split.by: "\n\n" replace read "sample" {/\r/} ""
 
 ; parse workflows as a tree, 
 ; with complete conditions to ender the child node
@@ -26,6 +26,7 @@ loop workflows [e][
 parts:
 map split.by: "\n" replace parts ["{","=", "}"] ["#[", ":","]"] [e][do e]
 
+; A DFS prototype for part 1 and 2
 explore: function [label][
     print ~"I am at |label|..."
     if? label = "A"  [print "reach A" return 1]
@@ -36,6 +37,7 @@ explore: function [label][
     ]
     return 0
 ]
+
 explore_part: function [label, part][
     if? label = "A"  [return true]
     if? label = "R"  [return false]
@@ -51,3 +53,59 @@ explore_part: function [label, part][
 u: select parts [part][explore_part "in" part]
 part1: fold u [a p][a + sum values p ]
 print ~"part 1 is ..... |part1|"
+
+rul: tree\in\1\0
+ran: #[x:[1,4000] m:[1,4000] a:[1,4000] s:[1,4000]]
+
+; NEGATIVE NUMBERS??? HOW TO FIX???
+compute: function [rule range][
+    new_ran: #[]
+    loop ran [k,v][new_ran\[k]: new v]
+    
+    loop split.by: "," rule [r][
+        c:r\0
+        num: to :integer join match r {/\d/}
+        ineq: match r {/=<|>=|<|>/}
+        a: #["=<": [1 0] ">=": [0 0] "<": [1 0-1] ">": [0 1]]
+        g: a\[ineq\0]
+        print g
+        print g\0
+        print g\1
+        if? g\0=1 [
+            new_ran\[c]\[g\0]: min @[new_ran\[c]\[g\0] num + g\1]
+        ]else[
+            new_ran\[c]\[g\0]: max @[new_ran\[c]\[g\0] num + g\1]
+        ]
+    ]
+    return new_ran
+]
+; print rul
+; print ran
+; print compute rul ran
+
+explore_ranges: function [label range][
+    ; print ~"I am at |label|..."
+    print range
+    if? label = "A"  [print product map values range [v][v\1 - v\0 + 1] return]
+    if? label = "R"  [return 0]
+    loop tree\[label] [e][
+        ; print ~"explore |e|"
+        print e\0
+        new_range: compute e\0 range
+        ; print new_range
+        explore_ranges e\1 new_range
+    ]
+
+]
+x:2
+print explore_ranges "in" ran
+
+webview .width:  300 
+        .height: 200
+        .title:  "My webview app"
+~---
+    This is my webpage|x|
+    
+        This is some content
+    
+---
