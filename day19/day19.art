@@ -1,0 +1,64 @@
+; Day 19 Aplenty 
+
+; read the file into two halves
+[workflows,parts]: split.by: "\n\n" replace read "input" {/\r/} ""
+
+; parse workflows as a tree, 
+; with complete conditions to ender the child node
+
+split.by: "\n" 'workflows
+tree: #[]
+loop workflows [e][
+    x: split.by: "{" replace e "}" "" 
+    
+    line: map split.by: "," x\1 [e][split.by: ":" e]
+    t: ""
+    tree\[x\0]: map.with:'i line 'y 
+    [if? i>0 [t: t ++ (replace line\[i-1]\0 
+    [{/([xmas])<(\d)/}, {/([xmas])>(\d)/} ]["$1>=$2" "$1=<$2"])++",", t]
+    c:"", if? i<> (size line) -1 [c:y\0]
+    @[replace t++c {/,$/} "" last y]]
+ 
+    ]
+; print workflows
+; print ""
+; print tree
+
+; parse the parts as a dictionary, interesting application of do keyword
+
+parts:
+map split.by: "\n" replace parts ["{","=", "}"] ["#[", ":","]"] [e][do e]
+
+explore: function [label][
+    print ~"I am at |label|..."
+    if? label = "A"  [print "reach A" return 1]
+    if? label = "R"  [print "reach R" return 0]
+    loop tree\[label] [e][
+        print ~"explore |last e|"
+        explore last e
+    ]
+    return 0
+]
+explore_part: function [label, part][
+    ; print ~"I am at |label|...with part"
+    ; print part
+    if? label = "A"  [return true]
+    if? label = "R"  [return false]
+    loop tree\[label] [e][
+        ; print e\0
+        ; print split.by: "," fold.seed: "" split.by: "," e\0 [a,x][a++"part\\"++x++","] 
+        z: all? map chop split.by: "," fold.seed: "" split.by: "," e\0 [a,x][a++"part\\"++x++","] [e][do e]
+        ; print ~"do we explore |e\1|, the rule is |e\0|"
+        ; inspect z
+        ; if? z [print "go for it"] else [print "nah"]
+        if? z [return explore_part e\1 part ]
+        ; else [print "continue"]
+    ]
+]
+
+; print tree
+; print parts\0
+part1:0
+loop.with: 'i parts 'x[
+if explore_part "in" parts\[i] ['part1+ sum values parts\[i]]]
+print ~"part 1 is ..... |part1|"
