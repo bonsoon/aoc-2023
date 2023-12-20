@@ -20,9 +20,6 @@ loop workflows [e][
     @[replace t++c {/,$/} "" last y]]
  
     ]
-; print workflows
-; print ""
-; print tree
 
 ; parse the parts as a dictionary, interesting application of do keyword
 
@@ -40,24 +37,15 @@ explore: function [label][
     return 0
 ]
 explore_part: function [label, part][
-    ; print ~"I am at |label|...with part"
-    ; print part
     if? label = "A"  [return true]
     if? label = "R"  [return false]
     loop tree\[label] [e][
-        ; print e\0
-        ; print split.by: "," fold.seed: "" split.by: "," e\0 [a,x][a++"part\\"++x++","] 
         z: all? map chop split.by: "," fold.seed: "" split.by: "," e\0 [a,x][a++"part\\"++x++","] [e][do e]
-        ; print ~"do we explore |e\1|, the rule is |e\0|"
-        ; inspect z
-        ; if? z [print "go for it"] else [print "nah"]
         if? z [return explore_part e\1 part ]
-        ; else [print "continue"]
     ]
 ]
 
-; print tree
-; print parts\0
+; solve part 1
 part1:0
 loop.with: 'i parts 'x[
 if explore_part "in" parts\[i] ['part1+ sum values parts\[i]]]
