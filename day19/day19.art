@@ -45,8 +45,9 @@ explore_part: function [label, part][
     ]
 ]
 
+
+
 ; solve part 1
-part1:0
-loop.with: 'i parts 'x[
-if explore_part "in" parts\[i] ['part1+ sum values parts\[i]]]
+u: select parts [part][explore_part "in" part]
+part1: fold u [a p][a + sum values p ]
 print ~"part 1 is ..... |part1|"
