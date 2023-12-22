@@ -1,0 +1,13 @@
+; --- Day 1: Trebuchet?! ---
+
+data: split.by: "\n" replace read "input" {/\r/} ""
+
+print ["part 1 ... "
+sum map data [x]
+[to :integer join @[first match x {/\d/} last match x {/\d/}]]]
+
+print ["part 2 ... "
+sum map map data [x][match replace x 
+["one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+["o1e" "t2o" "t3e" "f4r" "f5ve" "s6x" "s7n" "e8t" "n9e"]
+{/\d/}] [x][to :integer join @[first x last x]]]
