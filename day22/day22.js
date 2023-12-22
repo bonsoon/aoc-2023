@@ -95,6 +95,11 @@ bricks = []
 stack = new Map()
 
 data.forEach((x,i) => bricks.push(new Brick(x,i)))
+bricks.sort((a,b)=>
+a.snapshot[0][2]-b.snapshot[0][2]
+)
+
+print(bricks)
 
 stabailized = false
 print('simulating falling.......')
