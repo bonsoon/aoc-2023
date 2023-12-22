@@ -1,0 +1,26 @@
+; --- Day 2: Cube Conundrum --- 
+
+data: split.by: "\n" replace read "input" {/\r/} ""
+
+; part 1: at most 12 red cubes, 13 green cubes, and 14 blue cubes?
+check: #[red: 12 green: 13 blue: 14]
+
+print ["part 1 is ..." 
+fold.seed:0 .with:'i map data [x]
+[all? map drop split.by: {/:|;/} x [x][
+    fold.seed: true split.by: "," x [a x][
+        and? a check\[first match x {/red|blue|green/}]
+        >= to :integer join match x {/\d/}]]]
+[a,x][switch x [a + i + 1][a]]]
+
+; part 2: minimal distribution of colors 
+print ["part 2 is ..."
+sum map data [d][
+product values fold .seed: #[red:0 green: 0 blue: 0]
+ drop split.by: {/:|;|,/} d
+[a x]
+[   
+    c: first match x {/red|blue|green/}
+    a\[c]: max @[ a\[c] to :integer join match x {/\d/}]
+    a  
+]]]
