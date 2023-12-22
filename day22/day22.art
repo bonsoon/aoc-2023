@@ -1,6 +1,5 @@
 ;  --- Day 22: Sand Slabs ---
 data: split.by: "\n" replace read "input" {/\r/} ""
-tt: now
 
 bricks: arrange map data [x]
     [map split.by: {/~|,/} x [x][to :integer x]][x][x\2]
@@ -61,4 +60,3 @@ if canremove ['part1 + 1]
 
 print ["part 1 is ..." part1]
 print ["part 2 is ..." part2]
-print now\minute - tt\minute
