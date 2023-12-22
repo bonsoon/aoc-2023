@@ -1,0 +1,64 @@
+;  --- Day 22: Sand Slabs ---
+data: split.by: "\n" replace read "input" {/\r/} ""
+tt: now
+
+bricks: arrange map data [x]
+    [map split.by: {/~|,/} x [x][to :integer x]][x][x\2]
+    m:[0,0] loop bricks [b][m\0: max @[m\0 b\0 b\3]
+    m\1: max @[m\1 b\1 b\4]]
+
+newspace:function [][space: [] loop 0.. m\0 [x][
+    append 'space 0 space\[x]: map 0..m\1 [x][0]]
+    space]
+
+profile: $[brick][
+    ret: [] loop brick\0..brick\3 [x][
+    loop brick\1..brick\4[y][p: @[x y]
+    'ret ++ @[p]]]ret]
+
+height: $[brick][
+    1 + brick\5 - brick\2]
+
+drop: $[brick][
+    z:0
+    loop profile brick [p][z: max @[z space\[p\0]\[p\1]]]
+    loop profile brick [p][
+        space\[p\0]\[p\1]: z + height brick]
+    h: height brick
+    zini: brick\2
+    zfin: z+1     
+    brick\2: z + 1
+    brick\5: z + h
+    if? zini <> zfin [ret: true]
+    else [ret: false]
+    ret
+]
+
+; drop all the bricks and stabilize
+space: newspace
+loop bricks [b][drop b]
+
+; determine which brick can be removed
+
+part1: 0 part2: 0
+
+loop.with:'i bricks 'brick [
+space: newspace
+clones: new bricks
+
+canremove: true
+numpieceswouldfall: 0
+clones: remove.index clones i
+
+loop clones [b][
+    if drop b [canremove: false 'numpieceswouldfall+1]
+]
+print [i " can be removed?" canremove  ", " 
+numpieceswouldfall "pieces would fall"]
+if canremove ['part1 + 1]
+'part2 + numpieceswouldfall
+]
+
+print ["part 1 is ..." part1]
+print ["part 2 is ..." part2]
+print now\minute - tt\minute
