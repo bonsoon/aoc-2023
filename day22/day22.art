@@ -6,7 +6,7 @@ bricks: arrange map data [x]
     m:[0,0] loop bricks [b][m\0: max @[m\0 b\0 b\3]
     m\1: max @[m\1 b\1 b\4]]
 
-newspace:function [][space: [] loop 0.. m\0 [x][
+newspace: $[][space: [] loop 0.. m\0 [x][
     append 'space 0 space\[x]: map 0..m\1 [x][0]]
     space]
 
@@ -26,10 +26,10 @@ drop: $[brick][
     h: height brick
     zini: brick\2
     zfin: z+1     
-    brick\2: z + 1
-    brick\5: z + h
-    if? zini <> zfin [ret: true]
-    else [ret: false]
+
+    switch zini <> zfin [ret: true
+        brick\2: z + 1
+    brick\5: z + h][ret: false]
     ret
 ]
 
@@ -51,12 +51,13 @@ clones: remove.index clones i
 
 loop clones [b][
     if drop b [canremove: false 'numpieceswouldfall+1]
-]
+    ]
 print [i " can be removed?" canremove  ", " 
-numpieceswouldfall "pieces would fall"]
+    numpieceswouldfall "pieces would fall"]
+
 if canremove ['part1 + 1]
 'part2 + numpieceswouldfall
 ]
 
-print ["part 1 is ..." part1]
-print ["part 2 is ..." part2]
+print ["part 1 is ..." part1] ; 395
+print ["part 2 is ..." part2] ; 64714
