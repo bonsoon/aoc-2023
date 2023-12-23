@@ -92,6 +92,7 @@ function distance(a, b, avoid) {
                 dfs(nb, path)
                 path.delete('' + nb)
             }
+            if (max_distance > 0){break}
         }
     }
     dfs(a, new Set())
