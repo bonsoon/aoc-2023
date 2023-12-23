@@ -1,4 +1,5 @@
 ;  --- Day 22: Sand Slabs ---
+clear
 data: split.by: "\n" replace read "input" {/\r/} ""
 
 bricks: arrange map data [x]
@@ -52,12 +53,16 @@ clones: remove.index clones i
 loop clones [b][
     if drop b [canremove: false 'numpieceswouldfall+1]
     ]
-print [i " can be removed?" canremove  ", " 
+print 
+[i "can remove?" 
+switch canremove[color #green "yes!"][color #red "no!!"] "," 
     numpieceswouldfall "pieces would fall"]
 
 if canremove ['part1 + 1]
 'part2 + numpieceswouldfall
 ]
 
-print ["part 1 is ..." part1] ; 395
-print ["part 2 is ..." part2] ; 64714
+print repeat [color #red "*" color #green "*" color #blue "*"] 5
+print ["part 1 is ..." color #yellow to :string part1] ; 395
+print ["part 2 is ..." color #yellow to :string part2] ; 64714
+print repeat [color #red "*" color #green "*" color #blue "*"] 5
