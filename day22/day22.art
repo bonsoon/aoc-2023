@@ -11,7 +11,7 @@ newspace: $[][space: [] loop 0.. m\0 [x][
     append 'space 0 space\[x]: map 0..m\1 [x][0]]
     space]
 
-profile: $[brick][
+profile: $.memoized [brick][
     ret: [] loop brick\0..brick\3 [x][
     loop brick\1..brick\4[y][p: @[x y] 'ret ++ @[p]]]
     ret]
@@ -26,8 +26,7 @@ drop: $[brick][
     zini: brick\2, zfin: z+1     
     switch zini <> zfin 
     [ret: true brick\2: z + 1 brick\5: z + h][ret: false]
-    ret
-]
+    ret]
 
 ; drop all the bricks and stabilize
 space: newspace
@@ -48,8 +47,9 @@ clones: remove.index clones i
 loop clones [b][
     if drop b [canremove: false 'numpieceswouldfall+1]
     ]
+    clear
 print 
-[i "can remove?" 
+[get "\-/|" i % 3 i "can remove?" 
 switch canremove[color #green "yes!"][color #red "no!!"] "," 
     numpieceswouldfall "pieces would fall"]
 
