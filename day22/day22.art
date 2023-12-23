@@ -13,24 +13,19 @@ newspace: $[][space: [] loop 0.. m\0 [x][
 
 profile: $[brick][
     ret: [] loop brick\0..brick\3 [x][
-    loop brick\1..brick\4[y][p: @[x y]
-    'ret ++ @[p]]]ret]
+    loop brick\1..brick\4[y][p: @[x y] 'ret ++ @[p]]]
+    ret]
 
 height: $[brick][
     1 + brick\5 - brick\2]
 
 drop: $[brick][
-    z:0
-    loop profile brick [p][z: max @[z space\[p\0]\[p\1]]]
-    loop profile brick [p][
-        space\[p\0]\[p\1]: z + height brick]
-    h: height brick
-    zini: brick\2
-    zfin: z+1     
-
-    switch zini <> zfin [ret: true
-        brick\2: z + 1
-    brick\5: z + h][ret: false]
+    z:0, pf: profile brick, h: height brick
+    loop pf [p][z: max @[z space\[p\0]\[p\1]]]
+    loop pf [p][space\[p\0]\[p\1]: z + h]
+    zini: brick\2, zfin: z+1     
+    switch zini <> zfin 
+    [ret: true brick\2: z + 1 brick\5: z + h][ret: false]
     ret
 ]
 
