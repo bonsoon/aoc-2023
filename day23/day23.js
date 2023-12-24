@@ -126,6 +126,7 @@ function dfs2(pos, path) {
         let l = pathlength(path)
         if (l > part2) {
             part2 = l
+            print(l)
         }
         return
     }

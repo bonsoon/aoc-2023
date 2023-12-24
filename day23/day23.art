@@ -1,0 +1,39 @@
+; --- Day 23: A Long Walk ---
+
+data: split.by: "\n" replace read "sample" {/\r/} ""
+
+height: size data
+widith: size data\0
+
+grid: function [p][data\[p\0]\[p\1]]
+
+inbound: function [p][all? @[0 =< p\0 p\0 < height 0 =< p\1 p\1 < widith]]
+
+start_pos: @[0 index data\0 "."]
+
+end_pos: @[add size data neg 1 index last data "."]
+
+dirs: [[neg 1 0] [1 0] [0 neg 1] [0 1]] ; U D L R
+
+A: function [p q][@[p\0+q\0 p\1+q\1]]
+
+part1: 0
+
+dfs: function [pos path][
+    switch pos = end_pos [part1: max [part1 size path] null]
+    [
+        adj: new dirs 
+        if index "v>" grid pos [            
+            adj: get #["v": [[1 0]] ">": [[0,1]] ] grid pos
+        ]
+        loop adj[a][
+            if all? @[inbound A a pos grid A a pos <> "#"
+            
+            ] [
+
+            ]
+        ]
+    ]
+]
+
+; print dfs [2 21][]
