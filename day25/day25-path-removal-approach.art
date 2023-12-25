@@ -1,7 +1,8 @@
 stream: read "input"
 data: split.by: "\n" replace stream {/\r/} ""
 graph: #[]
-
+clear
+print color #red "* * * Day 25 * * *"
 ; build digraph from data
 loop data [e][
 [h ns]: split.by: ":" e
@@ -70,11 +71,14 @@ deleteedge: function [a b graph][
 ]
 
 ; testing
-clear
+
 print [color #yellow "size of graph is" size graph]
 print color #blue "we pick two random nodes and find its path"
-node0: get keys graph 1
-node1: get keys graph 2
+q: - size graph 1
+r1: random 0 q
+r2: random 0 q
+node0: get keys graph r1
+node1: get keys graph r2
 p: pathof node0 node1 graph
 
 print [node0 "->" node1 ":"]
