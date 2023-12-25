@@ -1,7 +1,10 @@
+benchmark[
 stream: read "input"
 data: split.by: "\n" replace stream {/\r/} ""
 graph: #[]
 clear
+; startsec: now\second
+; startnano: now\nanosecond
 print color #red "* * * Day 25 * * *"
 ; build digraph from data
 loop data [e][
@@ -71,7 +74,10 @@ deleteedge: function [a b graph][
 ]
 
 ; testing
-
+done: false
+numtrial: 0
+while [done<>true][
+'numtrial+1
 print [color #yellow "size of graph is" size graph]
 print color #blue "we pick two random nodes and find its path"
 q: - size graph 1
@@ -119,5 +125,10 @@ print "this means these two random nodes are in the same cluster"]
 [print ["component of" node0 "has size" p]
 c: - size graph p
 print ["component of" node1 "has size" c]
-print ["and their product is " c*p]
+ans: color #yellow to :string c*p
+print ["and their product is " ans]
+done: true
  ]
+]
+print [color #yellow "it took" numtrial "trial"]
+]
