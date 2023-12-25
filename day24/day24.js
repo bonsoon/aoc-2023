@@ -60,7 +60,8 @@ for(let i = 0 ; i < data.length; i++){
         if(intersect == null){continue}
         if(lower<= intersect[0] && intersect[0] <= upper
             &&lower<= intersect[1] && intersect[1] <= upper){
-                if(isfuture(data[i],intersect) && isfuture(data[j],intersect)){
+                if(isfuture(data[i],intersect) 
+                    && isfuture(data[j],intersect)){
                     part1++
                 }
 
@@ -71,7 +72,8 @@ for(let i = 0 ; i < data.length; i++){
 
 print('Part 1 is ...', part1)
 
-// part 2 ... we need to solve a system of nonlinear equations... and z3 is magic.
+// part 2 ... we need to solve a system of nonlinear equations... 
+// and z3 is magic.
 
 const { init } = require('z3-solver');
 

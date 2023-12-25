@@ -86,6 +86,7 @@ nbrs = function (node, min = 1, max = 3) {  // default min=1, max=3, allowed fle
 function explore(min = 1, max = 3) {
     // initial set of visited (position,dir)
     let visited = new Map()
+    // let path = new Map()
     // initial frontier set and intially visited set
     let frontier = new Map()
     frontier.set(t([0, 0, 0]))
@@ -94,7 +95,7 @@ function explore(min = 1, max = 3) {
     visited.set(t([0, 0, 1]), 0)
     // print(frontier)
     while (frontier.size) {
-        draw_f(data,frontier)
+        // draw_f(data,frontier)
         // print(frontier.size)
         let new_frontier = new Map()
         let iter = frontier.keys()
@@ -113,7 +114,9 @@ function explore(min = 1, max = 3) {
                 if (visited.has(n)) {
                     // if so update the score if equal or smaller
                     if (visited.get(node) + W(node, n) <= visited.get(n)) {
-                        visited.set(n, visited.get(node) + W(node, n))
+                        visited.set(n, visited.get(node) + W(node, n)
+                        )
+                        path.set(tr(n)+'', ''+tr(node))
                         new_frontier.set(n)
                     }
                     // ?? and visit if smaller?
@@ -121,6 +124,7 @@ function explore(min = 1, max = 3) {
                     // print(node,visited.get(node) + W(node, n))
                 } else {
                     // we never been visited, we gonna add to new frontier
+                    path.set(tr(n)+'', ''+tr(node))
                     new_frontier.set(n)
                     // and set it to visited, and update the score
                     visited.set(n, visited.get(node) + W(node, n))
@@ -137,6 +141,19 @@ function explore(min = 1, max = 3) {
 
     }
     // print('total visits...', visited.size)
+    // let x = '4,4,0'
+    // while(x!= undefined){
+    //     print(x)
+    //     x = path.get(x)
+    // }
+    // print('.......')
+    // x = '4,4,1'
+    // while(x!= undefined){
+    //     print(x)
+    //     x = path.get(x)
+    // }
+
+
     return [Math.min(visited.get(t([height - 1, width - 1, 0])),
         visited.get(t([height - 1, width - 1, 1]))
     ), visited]
@@ -155,7 +172,7 @@ print((performance.now() - ts) / 1000, 'seconds')
 
 // part 1 ...  1128
 // part 2 ...  1268
-// 17.366123699963094 seconds
+// 1.1055944000482558 seconds
 
 // Visualization stuff
 
