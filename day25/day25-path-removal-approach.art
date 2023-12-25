@@ -1,0 +1,119 @@
+stream: read "input"
+data: split.by: "\n" replace stream {/\r/} ""
+graph: #[]
+
+; build digraph from data
+loop data [e][
+[h ns]: split.by: ":" e
+strip 'ns
+split.by: " " 'ns
+set graph h ns
+]
+
+; symmetrize diagraph to graph
+loop graph [k v][
+    loop v [a][
+        switch key? graph a
+        [graph\[a]: append graph\[a] k]
+        [set graph a @[k]]
+    ]
+]
+
+; path finding by bfs from n0 to n1 in graph
+bfs: function [n0 n1 graph][
+    frontier: @[n0]
+    camefrom: #[]
+    while [> size frontier 0][
+        newfrontier: []
+        loop frontier [f][
+            if f=n1 [
+                return camefrom]
+            loop graph\[f] [a][
+                unless key? camefrom a
+                [
+                    unless in? a newfrontier
+                    ['newfrontier ++ a
+                    set camefrom a f
+                    ]
+                ]
+            ]
+        ]
+        frontier: new newfrontier
+    ]
+    print color #yellow "never found"
+    ; this should be the size of the connected component to n0
+    return size camefrom
+    ; careful with off-by-1 error
+]
+
+; returns the path of a graph from a to b
+; else returns the size of the component connected to a
+pathof: function [a b graph][
+    p: bfs a b graph
+    unless dictionary? p [return p]
+    thepath: []
+    x:node1
+    while[x <> node0][
+        'thepath ++ x
+        x: get p x 
+    ]
+    'thepath ++ x
+    return reverse thepath
+]
+
+; a function to delete a known edge in a graph
+deleteedge: function [a b graph][
+    g: new graph
+    g\[a]: remove g\[a] b
+    g\[b]: remove g\[b] a 
+    return g
+]
+
+; testing
+clear
+print [color #yellow "size of graph is" size graph]
+print color #blue "we pick two random nodes and find its path"
+node0: get keys graph 1
+node1: get keys graph 2
+p: pathof node0 node1 graph
+
+print [node0 "->" node1 ":"]
+print p
+
+print color #blue "we now delete the edges along this path"
+n: dec size p
+g: new graph
+loop 1..n [i][
+    g: deleteedge p\[i-1] p\[i] g
+]
+
+print "new path is"
+p: pathof node0 node1 g
+print p
+
+print color #blue "we repeat once more"
+n: dec size p
+loop 1..n [i][
+    g: deleteedge p\[i-1] p\[i] g
+]
+
+print "new path is"
+p: pathof node0 node1 g
+print p
+
+print color #blue "delete this path one last time"
+n: dec size p
+loop 1..n [i][
+    g: deleteedge p\[i-1] p\[i] g
+]
+
+print "new path is"
+p: pathof node0 node1 g
+switch block? p
+[print p 
+print "this means these two random nodes are in the same cluster"]
+[print ["component of" node0 "has size" p]
+c: - size graph p
+print ["component of" node1 "has size" c]
+print ["and their product is " c*p]
+ ]
